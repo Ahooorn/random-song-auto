@@ -56,7 +56,7 @@ cron.schedule("0 7 * * *", async () => {
   try {
     const channel = await client.channels.fetch(CHANNEL_ID);
     const song = await getRandomTrack();
-    channel.send("🎵 **House of the Day** " + song);
+    channel.send("🎵 **House of the Day** 🎵\n" + song);
   } catch (err) {
     console.error("Fehler beim Senden:", err);
   }
