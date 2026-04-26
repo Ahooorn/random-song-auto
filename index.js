@@ -7,11 +7,11 @@ const client = new Client({
 });
 
 // 🔑 HIER EINTRAGEN
-const DISCORD_TOKEN = "MTQ5NzkxMDk1NzE2OTQ0NzAyMg.GLjQvf.by3Tljygyp-TpX3n_aYcujIIT1qY6VVuYpnNPc";
-const CHANNEL_ID = "1497886585964855448";
-const SPOTIFY_CLIENT_ID = "c883a72bc4784270acc49dd0665e9ae4";
-const SPOTIFY_CLIENT_SECRET = "72d08a29dcc24691a3822d28fdd7cc0d";
-const PLAYLIST_ID = "7xeMtyBtLEKb69NQObqarg?si=08feaf4e0925405f";
+const DISCORD_TOKEN = "process.env.DISCORD_TOKEN";
+const CHANNEL_ID = "process.env.CHANNEL_ID";
+const SPOTIFY_CLIENT_ID = "process.env.SPOTIFY_CLIENT_ID";
+const SPOTIFY_CLIENT_SECRET = "process.env.SPOTIFY_CLIENT_SECRET";
+const PLAYLIST_ID = "process.env.PLAYLIST_ID";
 
 // Spotify Token holen
 async function getSpotifyToken() {
