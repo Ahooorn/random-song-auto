@@ -74,7 +74,7 @@ const playlist = [
 ];
 
 // 🕒 Jeden Tag um 9:00 österreichische Zeit (= 7:00 UTC im Sommer)
-cron.schedule("30 10 * * *", async () => {
+cron.schedule("0 7 * * *", async () => {
   try {
     const channel = await client.channels.fetch(CHANNEL_ID);
     const randomSong = playlist[Math.floor(Math.random() * playlist.length)];
