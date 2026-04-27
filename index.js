@@ -34,6 +34,7 @@ async function getSpotifyToken() {
 // Songs holen
 async function getRandomTrack() {
   const token = await getSpotifyToken();
+  console.log("Spotify Token:", token ? "OK" : "FEHLT");
 
   const res = await fetch(
     `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks`,
@@ -45,8 +46,13 @@ async function getRandomTrack() {
   );
 
   const data = await res.json();
-  const tracks = data.items;
+  console.log("Spotify Antwort:", JSON.stringify(data).slice(0, 300));
 
+  if (!data.items || data.items.length === 0) {
+    throw new Error("Keine Tracks gefunden!");
+  }
+
+  const tracks = data.items;
   const random = tracks[Math.floor(Math.random() * tracks.length)];
   return random.track.external_urls.spotify;
 }
