@@ -58,7 +58,7 @@ async function getRandomTrack() {
 }
 
 // 🕒 Jeden Tag um 9:00 österreichische Zeit (= 7:00 UTC im Sommer)
-cron.schedule("25 9 * * *", async () => {
+cron.schedule("31 9 * * *", async () => {
   try {
     const channel = await client.channels.fetch(CHANNEL_ID);
     const song = await getRandomTrack();
