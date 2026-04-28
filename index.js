@@ -71,7 +71,8 @@ const playlist = [
   "https://open.spotify.com/track/6TWbY1dq8eYtFiMiGdBlOa",
   "https://open.spotify.com/track/2libVw5xnVwelZ69K47bDz",
   "https://open.spotify.com/track/0ABFNHwvoIm3VzPbpLPyuN",
-  "https://open.spotify.com/track/63iPYTdJKfwTo2YDWKHOqr"
+  "https://open.spotify.com/track/63iPYTdJKfwTo2YDWKHOqr",
+  "https://open.spotify.com/track/5kLXDttdWGI7ERlQHwULX0"
 ];
 
 // 🕒 Jeden Tag um 9:00 österreichische Zeit (= 7:00 UTC im Sommer)
