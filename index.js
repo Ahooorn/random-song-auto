@@ -75,13 +75,34 @@ const playlist = [
   "https://open.spotify.com/track/5kLXDttdWGI7ERlQHwULX0"
 ];
 
+// 🔀 Shuffle-Funktion (Fisher-Yates)
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Gemischte Queue – wird neu befüllt wenn leer
+let queue = shuffle(playlist);
+
+function getNextSong() {
+  if (queue.length === 0) {
+    queue = shuffle(playlist);
+    console.log("Alle Songs gespielt – Queue neu gemischt!");
+  }
+  return queue.shift();
+}
+
 // 🕒 Jeden Tag um 9:00 österreichische Zeit (= 7:00 UTC im Sommer)
 cron.schedule("0 7 * * *", async () => {
   try {
     const channel = await client.channels.fetch(CHANNEL_ID);
-    const randomSong = playlist[Math.floor(Math.random() * playlist.length)];
-    channel.send("🎵 **House of the Day** 🎵\n\n" + randomSong);
-    console.log("Song gesendet:", randomSong);
+    const song = getNextSong();
+    channel.send("🎵 **House of the Day** 🎵\n\n" + song);
+    console.log("Song gesendet:", song, "| Noch in Queue:", queue.length);
   } catch (err) {
     console.error("Fehler beim Senden:", err);
   }
