@@ -72,7 +72,8 @@ const playlist = [
   "https://open.spotify.com/track/2libVw5xnVwelZ69K47bDz",
   "https://open.spotify.com/track/0ABFNHwvoIm3VzPbpLPyuN",
   "https://open.spotify.com/track/63iPYTdJKfwTo2YDWKHOqr",
-  "https://open.spotify.com/track/5kLXDttdWGI7ERlQHwULX0"
+  "https://open.spotify.com/track/5kLXDttdWGI7ERlQHwULX0",
+  "https://open.spotify.com/track/7mkO3QQGV2M3GSylMXAiDb"
 ];
 
 // 🔀 Shuffle-Funktion (Fisher-Yates)
