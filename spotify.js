@@ -3,16 +3,17 @@ const fetch = require("node-fetch");
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 
-let accessToken = null;
-let expiresAt = 0;
+let token = null;
+let tokenExpires = 0;
 
-// ----------------------------
-// Access Token
-// ----------------------------
+/**
+ * Holt einen gültigen Spotify Access Token.
+ * Der Token wird gespeichert und erst kurz vor Ablauf erneuert.
+ */
 async function getAccessToken() {
 
-    if (accessToken && Date.now() < expiresAt) {
-        return accessToken;
+    if (token && Date.now() < tokenExpires) {
+        return token;
     }
 
     const response = await fetch(
@@ -29,73 +30,81 @@ async function getAccessToken() {
                 "Content-Type":
                     "application/x-www-form-urlencoded"
             },
-
             body: "grant_type=client_credentials"
         }
     );
 
     if (!response.ok) {
+
         throw new Error(
-            "Spotify Token konnte nicht geladen werden."
+            "Spotify Access Token konnte nicht geladen werden."
         );
+
     }
 
     const data = await response.json();
 
-    accessToken = data.access_token;
+    token = data.access_token;
 
-    expiresAt =
+    // Token läuft normalerweise nach 3600 Sekunden ab.
+    // Wir erneuern ihn bereits 60 Sekunden früher.
+    tokenExpires =
         Date.now() +
-        (data.expires_in - 60) * 1000;
+        ((data.expires_in - 60) * 1000);
 
-    return accessToken;
+    return token;
+
 }
 
-// ----------------------------
-// Track ID aus URL
-// ----------------------------
-function getTrackId(url) {
+/**
+ * Extrahiert die Track-ID aus einem Spotify-Link.
+ */
+function extractTrackId(url) {
 
     const match =
         url.match(/track\/([A-Za-z0-9]+)/);
 
     if (!match) {
+
         throw new Error(
-            "Ungültiger Spotify Link."
+            "Ungültiger Spotify-Link."
         );
+
     }
 
     return match[1];
+
 }
 
-// ----------------------------
-// Millisekunden -> mm:ss
-// ----------------------------
+/**
+ * Formatiert Millisekunden zu mm:ss
+ */
 function formatDuration(ms) {
 
-    const total =
+    const seconds =
         Math.floor(ms / 1000);
 
     const minutes =
-        Math.floor(total / 60);
+        Math.floor(seconds / 60);
 
-    const seconds =
-        String(total % 60)
+    const remaining =
+        String(seconds % 60)
             .padStart(2, "0");
 
-    return `${minutes}:${seconds}`;
+    return `${minutes}:${remaining}`;
+
 }
 
-// ----------------------------
-// Song laden
-// ----------------------------
-async function getTrack(url) {
+/**
+ * Lädt alle Informationen eines Songs.
+ */
+async function getTrack(trackUrl) {
 
-    const token =
+    const accessToken =
         await getAccessToken();
 
     const trackId =
-        getTrackId(url);
+        extractTrackId(trackUrl);
 
     const response =
         await fetch(
@@ -103,7 +112,7 @@ async function getTrack(url) {
             {
                 headers: {
                     Authorization:
-                        `Bearer ${token}`
+                        `Bearer ${accessToken}`
                 }
             }
         );
@@ -111,7 +120,7 @@ async function getTrack(url) {
     if (!response.ok) {
 
         throw new Error(
-            "Song konnte nicht geladen werden."
+            `Spotify API Fehler (${response.status})`
         );
 
     }
@@ -138,7 +147,9 @@ async function getTrack(url) {
             ),
 
         image:
-            track.album.images[0]?.url,
+            track.album.images.length
+                ? track.album.images[0].url
+                : null,
 
         spotify:
             track.external_urls.spotify
@@ -148,5 +159,7 @@ async function getTrack(url) {
 }
 
 module.exports = {
+
     getTrack
+
 };
