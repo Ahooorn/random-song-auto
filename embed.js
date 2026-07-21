@@ -49,7 +49,7 @@ function createSongEmbed(song) {
 
     const button = new ButtonBuilder()
 
-        .setLabel("Open in Spotify")
+        .setLabel("🎧 Listen on Spotify")
 
         .setStyle(ButtonStyle.Link)
 
