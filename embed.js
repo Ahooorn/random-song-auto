@@ -5,62 +5,49 @@ const {
     ButtonStyle
 } = require("discord.js");
 
-/**
- * Erstellt einen schönen Discord-Embed
- * für den House of the Day.
- */
+const { totalSongs } = require("./queue");
+
 function createSongEmbed(song) {
 
     const today = new Date();
 
     const formattedDate =
-        today.toLocaleDateString(
-            "en-GB",
-            {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            }
-        );
+        today.toLocaleDateString("en-GB", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
 
-    const embed =
-        new EmbedBuilder()
+    const embed = new EmbedBuilder()
 
-        // Spotify-Grün
         .setColor(0x1DB954)
 
-        .setAuthor({
-            name: `🎵 House of the Day • ${formattedDate}`
-        })
+        .setTitle("🎵 House of the Day")
 
-        .setTitle(song.title)
+        .setDescription(
+`📅 **${formattedDate}**
+
+# ${song.title}
+
+🎤 ${song.artists}
+
+💿 ${song.album}
+
+⏱ ${song.duration}`
+        )
 
         .setURL(song.spotify)
 
-        .setDescription(
-
-`👤 **Artist${song.artists.includes(",") ? "s" : ""}**
-${song.artists}
-
-💿 **Album**
-${song.album}
-
-⏱ **Duration**
-${song.duration}`
-
-        )
-
-        // Großes Albumcover
         .setImage(song.image)
 
         .setFooter({
-            text: "🎧 Random House Track"
+            text: `🎧 Selected from ${totalSongs()} tracks`
         })
 
         .setTimestamp();
 
-    const spotifyButton =
-        new ButtonBuilder()
+    const button = new ButtonBuilder()
 
         .setLabel("Open in Spotify")
 
@@ -68,25 +55,17 @@ ${song.duration}`
 
         .setURL(song.spotify);
 
-    const row =
-        new ActionRowBuilder()
+    const row = new ActionRowBuilder()
 
-        .addComponents(
-            spotifyButton
-        );
+        .addComponents(button);
 
     return {
-
         embeds: [embed],
-
         components: [row]
-
     };
 
 }
 
 module.exports = {
-
     createSongEmbed
-
 };
