@@ -13,6 +13,6 @@
     "discord.js": "^14.21.0",
     "node-cron": "^4.0.7",
     "node-fetch": "^2.7.0",
-    "colorthief": "^2.6.0"
+    "fast-average-color-node": "^3.1.0"
   }
 }
