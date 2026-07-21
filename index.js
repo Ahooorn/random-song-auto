@@ -58,6 +58,7 @@ async function sendHouseOfTheDay() {
 client.once("clientReady", () => {
 
     console.log("🤖 House Bot ist online!");
+    sendHouseOfTheDay();
 
     // Jeden Tag um 09:00 Uhr Europa/Berlin
     cron.schedule(
