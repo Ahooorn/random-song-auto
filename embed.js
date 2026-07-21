@@ -1,4 +1,3 @@
-
 const {
     EmbedBuilder,
     ActionRowBuilder,
@@ -6,11 +5,15 @@ const {
     ButtonStyle
 } = require("discord.js");
 
+/**
+ * Erstellt einen schönen Discord-Embed
+ * für den House of the Day.
+ */
 function createSongEmbed(song) {
 
     const today = new Date();
 
-    const date =
+    const formattedDate =
         today.toLocaleDateString(
             "en-GB",
             {
@@ -23,10 +26,11 @@ function createSongEmbed(song) {
     const embed =
         new EmbedBuilder()
 
-        .setColor("#1DB954")
+        // Spotify-Grün
+        .setColor(0x1DB954)
 
         .setAuthor({
-            name: `🎵 House of the Day • ${date}`
+            name: `🎵 House of the Day • ${formattedDate}`
         })
 
         .setTitle(song.title)
@@ -34,18 +38,28 @@ function createSongEmbed(song) {
         .setURL(song.spotify)
 
         .setDescription(
-            `👤 **${song.artists}**\n\n` +
-            `💿 ${song.album}\n` +
-            `⏱ ${song.duration}`
+
+`👤 **Artist${song.artists.includes(",") ? "s" : ""}**
+${song.artists}
+
+💿 **Album**
+${song.album}
+
+⏱ **Duration**
+${song.duration}`
+
         )
 
-        .setThumbnail(song.image)
+        // Großes Albumcover
+        .setImage(song.image)
 
         .setFooter({
             text: "🎧 Random House Track"
-        });
+        })
 
-    const button =
+        .setTimestamp();
+
+    const spotifyButton =
         new ButtonBuilder()
 
         .setLabel("Open in Spotify")
@@ -57,7 +71,9 @@ function createSongEmbed(song) {
     const row =
         new ActionRowBuilder()
 
-        .addComponents(button);
+        .addComponents(
+            spotifyButton
+        );
 
     return {
 
@@ -70,5 +86,7 @@ function createSongEmbed(song) {
 }
 
 module.exports = {
+
     createSongEmbed
+
 };
